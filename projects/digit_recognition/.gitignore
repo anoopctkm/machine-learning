@@ -1,5 +1,6 @@
 *-ubyte*
 *.tar.gz
 */*.png
+*/*.thumbnail
 */*.m
 */*.mat
