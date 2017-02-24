@@ -4,6 +4,7 @@
 */*.jpg
 */*.jpeg
 */*.thumbnail
+!self/*.thumbnail
 */*.m
 */*.mat
 */*.data*
