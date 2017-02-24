@@ -1,6 +1,11 @@
 *-ubyte*
 *.tar.gz
 */*.png
+*/*.jpg
+*/*.jpeg
 */*.thumbnail
 */*.m
 */*.mat
+*/*.data*
+*/*.index
+*/*.meta
