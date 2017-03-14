@@ -16,9 +16,13 @@ In this section, provide brief details on the background information of the doma
 ### Problem Statement
 _(approx. 1 paragraph)_
 
-This project will investigate methods for predicting how much a person will like a new movie. Such predictions are directly useful for services like movie-streaming services like Netflix. For example, Netflix wishes to recommend new movies for a particular person based on ratings they've given to other movies. Making recommendations relies on the ability to predict the rating someone will assign to movies they haven't seen. It is one thing to make rating predictions for movies that have been rated by other users. However, this project will consider the case for movies that are newly added, and have not recieved ratings from any users.
+Imagine you work at Netflix and have added 100 new movies to the service. You'd like to include these new movies in recommendations for people, but who might like them? This project will attempt to solve this problem by investigating methods for predicting the 5-star rating a person will give a new movie.
+
+Such predictions are directly useful for movie-streaming services like Netflix, who make recommendations based on these predicted ratings. The major challenge is that new movies have not been rated by users, unlike movies that already exist in the service.
 
 The methods investigated are also likley to apply to similar problems faced by other services such as music-streaming services like Spotify (when new music is added) or accomodation services like Booking.com (when new hotels are added).
+
+Given a data set of known movie ratings, models can be evaluated by the accuracy of their predictions. If 5-stars are treated as categorical outcomes, then metrics such as precision, recall, and F1 are appropriate measures of performance. If 5-starsare treated as continuous, then metrics such as *R^2^* are appropriate.
 
 
 ** TO BE COMPLETED **
