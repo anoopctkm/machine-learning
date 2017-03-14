@@ -38,16 +38,13 @@ The data used in this project will come from two open-source projects:
 - [IMDB 5000 Movie Dataset](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset): 5000+ movie data scraped from IMDB website
 
 
-The MovieLens dataset contains individual user ratings of movies on a 5-star scale (with 5 being the best and 1 being the lowest).
+The MovieLens dataset contains individual user ratings of movies on a 5-star scale (with 5 being the best and 1 being the lowest). This data set makes it possible to determine for a given person, the sorts of ratings they assign to different sorts of movies.
 
 The IMDB dataset contains public information about 5000 movies and includes the following variables:
 
 > "movie_title" "color" "num_critic_for_reviews" "movie_facebook_likes" "duration" "director_name" "director_facebook_likes" "actor_3_name" "actor_3_facebook_likes" "actor_2_name" "actor_2_facebook_likes" "actor_1_name" "actor_1_facebook_likes" "gross" "genres" "num_voted_users" "cast_total_facebook_likes" "facenumber_in_poster" "plot_keywords" "movie_imdb_link" "num_user_for_reviews" "language" "country" "content_rating" "budget" "title_year" "imdb_score" "aspect_ratio"
 
-The problem addressed here is to determine whether a user's ratings for certain movies can be predicted based on:
-
-i. Their ratings of other movies (contained in the MovieLens dataset)
-ii. Public information about that movie (contained in the IMDB dataset)
+This dataset can be used to characterise new movies as simmilar or dissimilar from other movies that have been rated.
 
 ** TO BE COMPLETED **
 
@@ -55,6 +52,16 @@ In this section, the dataset(s) and/or input(s) being considered for the project
 
 ### Solution Statement
 _(approx. 1 paragraph)_
+
+Given a particular person and a particular new movie, the solution will involve the following:
+
+- Find a feature vector characterising the movie that can be compared to other movies (using the IMDB dataset).
+- For this new movie, find similar movies that HAVE been rated by other users.
+- Create a weighted average of the (predicted) ratings of these similar movies for the person (using the MovieLens 20M Dataset).
+- Predict this rating.
+
+
+
 
 The datasets will be combined to only consider movies that are included in both data sets.
 
