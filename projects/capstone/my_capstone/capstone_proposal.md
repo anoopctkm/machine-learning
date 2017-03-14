@@ -9,20 +9,66 @@ _(approx. 2-3 pages)_
 ### Domain Background
 _(approx. 1-2 paragraphs)_
 
+** TO BE COMPLETED **
+
 In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
 
 ### Problem Statement
 _(approx. 1 paragraph)_
+
+This project will investigate methods for predicting how much a person will like a new movie. Such predictions are directly useful for services like movie-streaming services like Netflix. For example, Netflix wishes to recommend new movies for a particular person based on ratings they've given to other movies. Making recommendations relies on the ability to predict the rating someone will assign to movies they haven't seen. It is one thing to make rating predictions for movies that have been rated by other users. However, this project will consider the case for movies that are newly added, and have not recieved ratings from any users.
+
+The methods investigated are also likley to apply to similar problems faced by other services such as music-streaming services like Spotify (when new music is added) or accomodation services like Booking.com (when new hotels are added).
+
+
+** TO BE COMPLETED **
 
 In this section, clearly describe the problem that is to be solved. The problem described should be well defined and should have at least one relevant potential solution. Additionally, describe the problem thoroughly such that it is clear that the problem is quantifiable (the problem can be expressed in mathematical or logical terms) , measurable (the problem can be measured by some metric and clearly observed), and replicable (the problem can be reproduced and occurs more than once).
 
 ### Datasets and Inputs
 _(approx. 2-3 paragraphs)_
 
+The data used in this project will come from two open-source projects:
+
+- [MovieLens 20M Dataset](https://www.kaggle.com/grouplens/movielens-20m-dataset): Over 20 Million Movie Ratings and Tagging Activities Since 1995
+- [IMDB 5000 Movie Dataset](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset): 5000+ movie data scraped from IMDB website
+
+
+The MovieLens dataset contains individual user ratings of movies on a 5-star scale (with 5 being the best and 1 being the lowest).
+
+The IMDB dataset contains public information about 5000 movies and includes the following variables:
+
+> "movie_title" "color" "num_critic_for_reviews" "movie_facebook_likes" "duration" "director_name" "director_facebook_likes" "actor_3_name" "actor_3_facebook_likes" "actor_2_name" "actor_2_facebook_likes" "actor_1_name" "actor_1_facebook_likes" "gross" "genres" "num_voted_users" "cast_total_facebook_likes" "facenumber_in_poster" "plot_keywords" "movie_imdb_link" "num_user_for_reviews" "language" "country" "content_rating" "budget" "title_year" "imdb_score" "aspect_ratio"
+
+The problem addressed here is to determine whether a user's ratings for certain movies can be predicted based on:
+
+i. Their ratings of other movies (contained in the MovieLens dataset)
+ii. Public information about that movie (contained in the IMDB dataset)
+
+** TO BE COMPLETED **
+
 In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.
 
 ### Solution Statement
 _(approx. 1 paragraph)_
+
+The datasets will be combined to only consider movies that are included in both data sets.
+
+All movies will be assigned a unit-normalized feature vector. This creates a multidimensional space in which movies that are similar to eachother (eg as determined by cosine similarity) are closer to eachother.
+
+This multidimensional space can be overlayed with ratings (and error margins). For example, we could start with an unbiased model for which all points on the unit-space are intialized to have a rating of 2.5 stars with 2.5-star error margins.
+
+Instead, we'd have a population-level unit-space which is refined based on population-level stats obtained in the IMDB dataset.
+
+For a given user, we could insert their ratings into the unbiased unit-space. An algorithm can then interpolate between 
+
+
+
+Unsupervised methods will be used to create similarity metrics / clustering of movies.
+
+A user's ratings will be used to 
+
+** TO BE COMPLETED **
 
 In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).
 
