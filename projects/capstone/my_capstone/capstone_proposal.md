@@ -9,8 +9,6 @@ _(approx. 2-3 pages)_
 ### Domain Background
 _(approx. 1-2 paragraphs)_
 
-** TO BE COMPLETED **
-
 In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.
 
 ### Problem Statement
@@ -23,7 +21,6 @@ Such predictions are directly useful for movie-streaming services like Netflix, 
 The methods investigated are also likley to apply to similar problems faced by other services such as music-streaming services like Spotify (when new music is added) or accomodation services like Booking.com (when new hotels are added).
 
 ### Datasets and Inputs
-_(approx. 2-3 paragraphs)_
 
 The data used in this project will come from two open-source projects:
 
@@ -41,7 +38,6 @@ This dataset can be used to cluster movies on attributes other than user ratings
 Combined, these two data sets can be used to train and test models for predicting the ratings that users will give "new" movies. To tackle the "new" part, all ratings assigned to a subset of movies in the MovieLens dataset will be removed for test purposes.
 
 ### Solution Statement
-_(approx. 1 paragraph)_
 
 A solution should:
 
@@ -50,7 +46,6 @@ A solution should:
 3. Return a predicted 5-star rating.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
 
 Two benchmark models for estimating the solution (5-star ratings):
 
@@ -58,12 +53,22 @@ Two benchmark models for estimating the solution (5-star ratings):
 - The mean rating of the user for whom a prediction is being made.
 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
 Given a data set of known movie ratings, models investigating this problem can be evaluated by the accuracy of their predictions. If 5-stars are treated as categorical outcomes, then metrics such as precision, recall, and F1 are appropriate measures of performance. If 5-stars are treated as continuous, then metrics such as *R^2^* are appropriate. Different algorithms will be tested, therefore making it possible that both of these evaluation approaches will be used.
 
 ### Project Design
 _(approx. 1 page)_
+
+- Data import
+- Data investigation and cleaning
+- Movie clustering approaches?
+- User clustering approaches?
+- Combining approaches?
+- Benchmarking?
+- Cross validation?
+
+** TO BE COMPLETED **
+
 
 In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
 
