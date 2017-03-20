@@ -59,13 +59,28 @@ Given a data set of known movie ratings, models investigating this problem can b
 ### Project Design
 _(approx. 1 page)_
 
-- Data import
-- Data investigation and cleaning
-- Movie clustering approaches?
-- User clustering approaches?
-- Combining approaches?
-- Benchmarking?
-- Cross validation?
+My expected approach will attempt to do the following:
+
+- For any new movie, use unsupervised methods to find similar (rated) movies.
+- For a particular user, use unsupervised methods to find similar users and how they would rate the movies being considered.
+- Use this information in a supervised manner to make a prediction.
+
+The expected workflow for generating these components will be to iteratively address the following tasks:
+
+- Import data
+- Clean data, including:
+	- Investigating outliers
+	- Handling missing values
+	- Normalizing where appropriate
+	- one-hot encoding where appropriate
+- Feature engineering
+- Develop unsupervised method(s) for clustering movies
+- Develop unsupervised method(s) for clustering users
+- Develop supervised method(s) to make movie prediction
+- Assess performance of final model(s) using validation and test sets by:
+	- Evaluating performance with relevant metrics (as described earlier)
+	- Comparing to benchmark model performance
+	- Using k-fold cross validation
 
 ** TO BE COMPLETED **
 
