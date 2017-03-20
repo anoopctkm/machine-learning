@@ -2,12 +2,9 @@
 ## Specializations
 ## Project: Capstone Proposal and Capstone Project
 
-**Note**
+## Data
 
-The Capstone is a two-staged project. The first is the proposal component, where you can receive valuable feedback about your project idea, design, and proposed solution. This must be completed prior to your implementation and submitting for the capstone project. 
+Data is large and inconvenient to ship directly with this project. The two datasets being used can be obtained by downloading them from Kaggle. The respective websites for each dataset also provide an explanation and examples of the data included.
 
-You can find the [capstone proposal rubric here](https://review.udacity.com/#!/rubrics/410/view), and the [capstone project rubric here](https://review.udacity.com/#!/rubrics/108/view). Please ensure that you are following directions correctly when submitting these two stages which encapsulate your capstone.
-
-You will find an `open_projects` folder in these files. This will be where pre-curated capstone projects are available, should you choose to work on a project already partially designed for you. 
-
-Please email [machine-support@udacity.com](mailto:machine-support@udacity.com) if you have any questions.
+- [MovieLens 20M](https://www.kaggle.com/grouplens/movielens-20m-dataset)
+- [IMDB 5000 Movie](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset)
