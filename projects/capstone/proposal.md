@@ -42,6 +42,8 @@ The solution should:
 2. Take a movie that hasn't appeared in the MovieLens dataset, but has features about it available in the IMDB dataset.
 3. Return a predicted 5-star rating.
 
+For this particular project, this solution will need to combine collaborative and content-based filtering systems as a hybrid recommender system, as neither approach alone will be sufficient.
+
 ### Benchmark Model
 
 Two benchmark models for estimating the solution (5-star ratings):
@@ -51,22 +53,28 @@ Two benchmark models for estimating the solution (5-star ratings):
 
 ### Evaluation Metrics
 
-Given a data set of known movie ratings, models investigating this problem can be evaluated by the accuracy of their predictions. If 5-stars are treated as categorical outcomes, then metrics such as precision, recall, and F1 are appropriate measures of performance. If 5-stars are treated as continuous, then metrics such as root mean square error are appropriate (this metric was used in the famous [Netflix Prize](https://en.wikipedia.org/wiki/Netflix_Prize)). Different algorithms will be tested, therefore making it possible that both of these evaluation approaches will be used.
+Given a data set of known movie ratings, models investigating this problem can be evaluated by the accuracy of their predictions. For this project, these ratings will be treated as a continuous variable. Therefore, an appropriate metric for evaluating model performance will be the [root mean square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). This has been the metric used in similar problems such as the famous [Netflix Prize](https://en.wikipedia.org/wiki/Netflix_Prize)).
+
+The RMSE is calculated by squaring the error terms (residuals) for predictions on a given set of data points, calculating the means of these, and taking the square root. A value of 0 indicates that all predictions perfectly match the true values. The more positive the value, the worse the performance. Therefore, the expectation is that a hybrid recommender system will have a lower RMSE (closer to zero) than the benchmark approaches described above.
 
 ### Project Design
 
 My expected approach will attempt to do the following:
 
-- Develop *collaborative filtering model*: For a particular user, use unsupervised methods to find similar users and how they would rate the movies being considered.
-- Develop *content-based filtering model*: For any new movie, use unsupervised methods to find similar (rated) movies and link these to user ratings.
+- Develop *collaborative filtering model*: For a particular user, use unsupervised methods to find similar users and how they would rate the movies being considered. This may inolve clustering users into different segments via methods such as K-means, or Gaussian Mixture models.
+- Develop *content-based filtering model*: For any new movie, use unsupervised methods to find similar (rated) movies and link these to user ratings. 
 - Combine information in a supervised manner to make a prediction.
 
 The tasks involved in achieving these steps include:
 
 - Downloading and preprocessing the [MovieLens 20M](https://www.kaggle.com/grouplens/movielens-20m-dataset) and [IMDB 5000 Movie](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset) datasets.
+- Exploring and visualizing the data.
+- Building and evaluating benchmark models.
 - Implementing an unsupervised algorithm for identifying movies that are similar to eachother.
 - Implementing an unsupervised algorithm for identifying users whose ratings are similar to eachother.
 - Implementing a supervised algorithm that combines information across these sources to make predictions of new movie ratings.
+- Analyzing and evaluating the results.
+- Considering improvements to the model.
 
 The final data pipeline is expected to take IMDB information about a new movie and ratings of other movies for a given user, and produce a predicted 5-star rating.
 
