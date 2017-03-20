@@ -11,9 +11,13 @@ The use of recommender systems is popular on e-commerce sites, which are interes
 
 Recommender systems often take the form of collaborative or content-based filtering. The former involves predicting what a user will like based on their similarity to other users[^c2]. The latter involves matching content to a user based on similarities among the content[^c3]. A more advanced approach that will be investigated in this project is a hybrid recommender system, which leverages and combines collaborative and content-based filtering.
 
+In this project I will train a hybrid recommender system to predict how different users will rate (out of 5-stars) new movies. This system will be trained by combining information from the [MovieLens 20M](https://www.kaggle.com/grouplens/movielens-20m-dataset) and [IMDB 5000 Movie](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset) datasets, which are both available via the online machine learning challenge platform, [Kaggle](https://www.kaggle.com/).
+
 ### Problem Statement
 
 Imagine you work at Netflix and have added new movies to the service. You'd like to recommend these to people who will like them. To determine whether a particular user might like one of these movies, it's impossible to see if other, similar users like the movie (because it's new and hasn't been rated). It's also challenging to see how the user rated other similar movies, because user ratings are relatively sparse. This project will attempt to solve this problem by investigating a hybrid recommender system for predicting the 5-star rating a person will give a new, unrated movie. A collaborative filtering component will link a given user to other similar users, and movie preferences can be pooled over the entire group of similar users. This can be used to estimate the preferences of many already-existing movies, which can be used by a content-filtering component to make the final prediction.
+
+In summary, the goal is to create a recommender system that will predict users' ratings of new movies.
 
 ### Datasets and Inputs
 
@@ -57,23 +61,14 @@ My expected approach will attempt to do the following:
 - Develop *content-based filtering model*: For any new movie, use unsupervised methods to find similar (rated) movies and link these to user ratings.
 - Combine information in a supervised manner to make a prediction.
 
-The expected workflow for generating these components will be to iteratively address the following tasks:
+The tasks involved in achieving these steps include:
 
-- Import data
-- Clean data, including:
-    - Investigating outliers
-    - Handling missing values
-    - Normalising where appropriate
-    - one-hot encoding where appropriate
-- Feature engineering
-- Develop unsupervised method(s) for clustering movies
-- Develop unsupervised method(s) for clustering users
-- Develop supervised method(s) to make movie prediction
-- Assess performance of final model(s) using validation and test sets by:
-    - Evaluating performance with relevant metrics (as described earlier)
-    - Comparing to benchmark model performance
-    - Using k-fold cross validation
+- Downloading and preprocessing the [MovieLens 20M](https://www.kaggle.com/grouplens/movielens-20m-dataset) and [IMDB 5000 Movie](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset) datasets.
+- Implementing an unsupervised algorithm for identifying movies that are similar to eachother.
+- Implementing an unsupervised algorithm for identifying users whose ratings are similar to eachother.
+- Implementing a supervised algorithm that combines information across these sources to make predictions of new movie ratings.
 
+The final data pipeline is expected to take IMDB information about a new movie and ratings of other movies for a given user, and produce a predicted 5-star rating.
 
 [^c1]: Francesco Ricci and Lior Rokach and Bracha Shapira, Introduction to Recommender Systems Handbook, Recommender Systems Handbook, Springer, 2011, pp. 1-35
 [^c2]: Prem Melville and Vikas Sindhwani, Recommender Systems, Encyclopedia of Machine Learning, 2010.
