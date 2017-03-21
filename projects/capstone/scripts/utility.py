@@ -9,3 +9,8 @@ def help_read_csv(path_to_csv):
 		print "Dataset could not be loaded. Is the dataset missing?"
 		
 	return data
+
+
+def count_plot(series):
+	series.value_counts().plot(kind="bar")
+

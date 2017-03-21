@@ -18,6 +18,12 @@ def prep(data_directory):
 	data['english'] = data['language'] == 'English'
 	data.drop(['language'], axis=1, inplace=True)
 
+	# Dummy code `country` to two bool variables: `usa`, `uk`
+	# US (particularly) and UK dominate. Other can be own category.
+	data['usa'] = data['country'] == 'USA'
+	data['uk']  = data['country'] == 'UK'
+	data.drop(['country'], axis=1, inplace=True)
+
 	# Dummy code color to 1 (color) or 0 (Black and white)
 	data['color'] = data['color'] == 'Color'
 
