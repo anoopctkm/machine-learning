@@ -15,7 +15,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="data_imdb.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="data_imdb.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/data_imdb.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
@@ -23,6 +23,15 @@
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="notebook.ipynb" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/notebook.ipynb">
+          <provider selected="true" editor-type-id="ipnb-editor">
+            <state>
+              <selected id="17" />
             </state>
           </provider>
         </entry>
@@ -64,6 +73,7 @@
         <option value="$PROJECT_DIR$/scripts/utility.py" />
         <option value="$PROJECT_DIR$/scripts/extract_zips.py" />
         <option value="$PROJECT_DIR$/scripts/data_imdb.py" />
+        <option value="$PROJECT_DIR$/notebook.ipynb" />
       </list>
     </option>
   </component>
@@ -328,6 +338,13 @@
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notebook.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="17" />
         </state>
       </provider>
     </entry>
