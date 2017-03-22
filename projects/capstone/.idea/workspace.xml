@@ -18,8 +18,8 @@
       <file leaf-file-name="data_imdb.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/data_imdb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="74" column="4" lean-forward="true" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+            <state relative-caret-position="442">
+              <caret line="68" column="65" lean-forward="true" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="65" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -355,8 +355,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/data_imdb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="74" column="4" lean-forward="true" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+        <state relative-caret-position="442">
+          <caret line="68" column="65" lean-forward="true" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="65" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
