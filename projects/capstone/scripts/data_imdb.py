@@ -28,7 +28,7 @@ def prep(data_directory):
 	data['color'] = data['color'] == 'Color'
 
 	# Dummy code content ratings
-	dummy_ratings = pd.get_dummies(data.content_rating.str.lower())
+	dummy_ratings = pd.get_dummies(data.content_rating.str.lower()).astype(int)
 	data = pd.concat([data, dummy_ratings], axis=1, join='inner')
 	data.drop(['content_rating'], axis=1, inplace=True)
 

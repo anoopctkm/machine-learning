@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def help_read_csv(path_to_csv):
 	data = None
 	try:
@@ -12,5 +13,9 @@ def help_read_csv(path_to_csv):
 
 
 def count_plot(series):
-	series.value_counts().plot(kind="bar")
+	series.value_counts().plot(kind = 'bar')
+
+
+def float_scatter_matrix(df):
+	pd.scatter_matrix(df.select_dtypes(include=['float64']), alpha=0.2, diagonal='kde')
 
