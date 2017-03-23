@@ -22,7 +22,7 @@ def prep(data_directory):
 	print '- Read in .csv file with {} rows and {} columns'.format(*data.shape)
 
 	# Drop unneeded variables
-	data.drop(['director_name', 'actor_1_name', 'actor_2_name', 'actor_3_name', 'plot_keywords'], axis=1, inplace=True)
+	data.drop(['director_name', 'actor_1_name', 'actor_2_name', 'actor_3_name', 'plot_keywords', 'aspect_ratio'], axis=1, inplace=True)
 
 	print '- Dropped unneeded variables'
 
@@ -34,6 +34,12 @@ def prep(data_directory):
 
 	print '- Extracted IMDB movie ids as `imdb_id` from url in `movie_imdb_link`'
 
+
+	# Drop duplicated movies
+	data.drop_duplicates('imdb_id', inplace = True)
+	data.reset_index(drop = True, inplace=True)
+
+	print '- Duplicate movies removed'
 
 	# 'movie_title', 'imdb_id'
 	# should also be dropped eventually, but are needed to merge with other data sets
@@ -80,15 +86,39 @@ def prep(data_directory):
 
 	"""
 
+	MISSING VALUES
+
+	"""
+
+
+	float_vars = list(data.select_dtypes(include=['float64']))
+
+	# For gross, missing values are probably 0s, so handle this first
+	data.gross.fillna(0, inplace=True)
+
+	# Handling missing values...
+	data.fillna(data.mean()[float_vars], inplace=True)  # For float columns
+	data.fillna(data.drop(float_vars, axis=1).mode(), inplace=True)  # For all others
+
+	print '- Missing values imputed as mean/mode'
+
+	"""
+
 	CONTINUOUS VARIABLES
 
 	"""
 
-	float_vars = list(data.select_dtypes(include=['float64']))
-
 	# Distribution Transformations
 	data.num_critic_for_reviews = np.sqrt(data.num_critic_for_reviews)
 	data.gross = np.sqrt(data.gross)
+
+	data.director_facebook_likes = np.log(data.director_facebook_likes + 1)
+	data.actor_1_facebook_likes = np.log(data.actor_1_facebook_likes + 1)
+	data.actor_2_facebook_likes = np.log(data.actor_2_facebook_likes + 1)
+	data.actor_3_facebook_likes = np.log(data.actor_3_facebook_likes + 1)
+	data.budget = np.log(data.budget)
+	data.duration = np.log(data.duration)
+	data.num_user_for_reviews = np.log(data.num_user_for_reviews)
 
 	# An extreme option. See http://stackoverflow.com/questions/38151261/find-a-python-transformation-function-or-numpy-matrix-to-transform-skewed-normal
 	#data.num_critic_for_reviews = norm.ppf((data.num_critic_for_reviews.rank() - .5) / len(data))
@@ -102,17 +132,6 @@ def prep(data_directory):
 
 	print '- All float variables normalized to range between 0 to 1'
 
-	"""
-
-	MISSING VALUES
-
-	"""
-
-	# Handling missing values...
-	data.fillna(data.mean()[float_vars], inplace=True)  # For float columns
-	data.fillna(data.drop(float_vars, axis=1).mode(), inplace=True)  # For all others
-
-	print '- Missing values imputed as mean/mode'
 
 	"""
 
