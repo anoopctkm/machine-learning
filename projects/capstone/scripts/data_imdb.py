@@ -2,9 +2,8 @@ import os.path
 import pandas as pd
 import numpy as np
 
-from scipy.stats import norm
+from sklearn.decomposition import PCA
 from scripts.utility import help_read_csv
-
 
 def prep(data_directory):
 
@@ -42,7 +41,7 @@ def prep(data_directory):
 	print '- Duplicate movies removed'
 
 	# 'movie_title', 'imdb_id'
-	# should also be dropped eventually, but are needed to merge with other data sets
+	# should also be dropped from analyses, but are needed to merge with other data sets
 
 	"""
 
@@ -142,3 +141,28 @@ def prep(data_directory):
 
 	print '\nPrep of IMDB data completed.\n'
 	return data
+
+
+"""
+Conduct PCA on float variables and replace with dimensions
+"""
+
+
+def pca_of_float_vars(data, n_components = None):
+
+	float_vars = list(data.select_dtypes(include=['float64']))
+	float_data = data[float_vars]
+
+	if n_components is None:
+		n_components = len(float_vars)
+
+	pca = PCA(n_components=n_components)
+	pca.fit(float_data)
+
+	reduced_data = pca.transform(float_data)
+	reduced_data = pd.DataFrame(reduced_data, columns=list('dimension_' + str(i) for i in xrange(n_components)))
+
+	# Replace float variables with dimension results
+	data = pd.concat([data.drop(float_vars, axis=1), reduced_data], axis=1, join='inner')
+
+	return data, pca
