@@ -35,8 +35,10 @@ def prep(data_directory, imdb_ids):
     print '- Movies not appearing in IMDB dataset dropped'
 
 
-    # Retain users who have made k or more ratings
-    # - helps to have only users with enough info as well as reducing the data set size (which is massive)
+    # Retain users who have made k or more ratings, which helps to:
+    # - work with with users who have enough info
+    # - work with users who provide more variable ratings (as opposed to users who only provide a few 4-5 stars)
+    # - reduces data set size (which is massive)
     k = 1000
     data = data.groupby('userId').filter(lambda x: len(x) >= k)
 
