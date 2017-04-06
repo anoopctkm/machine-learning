@@ -1,4 +1,6 @@
 import pandas as pd
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 
 
 def help_read_csv(path_to_csv):
@@ -19,3 +21,6 @@ def count_plot(series):
 def float_scatter_matrix(df):
 	pd.scatter_matrix(df.select_dtypes(include=['float64']), alpha=0.2, diagonal='kde')
 
+
+def rmse(true, predicted):
+	return sqrt(mean_squared_error(true, predicted))

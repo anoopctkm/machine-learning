@@ -25,11 +25,12 @@ def prep(data_directory):
 
 	print '- Dropped unneeded variables'
 
-	# Extract IMDB movie id from link as `imdb_id`
+	# Extract IMDB movie id from link as an integer, `imdb_id`
 	data['movie_imdb_link'] = data['movie_imdb_link'].astype('str')
 	data['imdb_id'] = data.movie_imdb_link.str.extract('(tt[0-9]+)', expand = False)
 	data['imdb_id'] = data['imdb_id'].str.extract('([0-9]+)', expand = False)
 	data.drop(['movie_imdb_link'], axis=1, inplace=True)
+	data['imdb_id'] = data['imdb_id'].astype(int)
 
 	print '- Extracted IMDB movie ids as `imdb_id` from url in `movie_imdb_link`'
 

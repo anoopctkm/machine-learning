@@ -5,7 +5,7 @@ import numpy as np
 from scripts.utility import help_read_csv
 
 
-def prep(data_directory):
+def prep(data_directory, imdb_ids):
 
     print 'Preparing MovieLens data...\n'
 
@@ -28,11 +28,26 @@ def prep(data_directory):
 
     print '- Bind IMDB ID as `imdb_id` using link.csv'
 
+
+    # Retain only movies appearing in the IMDB data set
+    data = data[data['imdb_id'].isin(imdb_ids)]
+
+    print '- Movies not appearing in IMDB dataset dropped'
+
+
+    # Retain users who have made k or more ratings
+    # - helps to have only users with enough info as well as reducing the data set size (which is massive)
+    k = 1000
+    data = data.groupby('userId').filter(lambda x: len(x) >= k)
+
+    print '- Drop users who made fewer than ' + str(k) + ' ratings'
+
     """
 
     END
 
     """
 
+    data.reset_index(drop=True, inplace=True)
     print '\nPrep of MovieLens data completed.\n'
     return data
