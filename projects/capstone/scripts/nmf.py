@@ -10,12 +10,13 @@ import numpy as np
 from scipy import linalg
 from numpy import dot
 
-def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6, print_step=None):
+def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6, print_step=10, messages=True):
     """
     Decompose X to A*Y
     """
     eps = 1e-5
-    print 'Starting NMF decomposition with {} latent features and {} iterations.'.format(latent_features, max_iter)
+    if messages:
+        print 'Starting NMF decomposition with {} latent features and {} iterations.'.format(latent_features, max_iter)
     X = X.toarray()  # I am passing in a scipy sparse matrix
 
     # mask
@@ -50,7 +51,7 @@ def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6
 
 
         # ==== evaluation ====
-        if i is not None and (i % print_step == 0 or i == 1 or i == max_iter):
+        if i % print_step == 0 or i == 1 or i == max_iter:
             print 'Iteration {}:'.format(i),
             X_est = dot(A, Y)
             err = mask * (X_est_prev - X_est)
@@ -58,10 +59,12 @@ def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6
             X_est_prev = X_est
 
             curRes = linalg.norm(mask * (X - X_est), ord='fro')
-            print 'fit residual', np.round(fit_residual, 4),
-            print 'total residual', np.round(curRes, 4)
+            if messages:
+                print 'fit residual', np.round(fit_residual, 4),
+                print 'total residual', np.round(curRes, 4)
             if curRes < error_limit or fit_residual < fit_error_limit:
                 break
 
-    print 'NMF decomposition complete.'
+    if messages:
+        print 'NMF decomposition complete.'
     return A, Y
