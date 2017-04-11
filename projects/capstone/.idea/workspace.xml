@@ -54,8 +54,8 @@
       <file leaf-file-name="nmf.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/nmf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="67" column="4" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
+            <state relative-caret-position="549">
+              <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
               <folding>
                 <element signature="e#228#246#0" expanded="true" />
               </folding>
@@ -88,6 +88,7 @@
       <find>xrange</find>
       <find>drop = Tr</find>
       <find>drop</find>
+      <find>iteration</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -606,8 +607,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/nmf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="67" column="4" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
+        <state relative-caret-position="549">
+          <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
           <folding>
             <element signature="e#228#246#0" expanded="true" />
           </folding>

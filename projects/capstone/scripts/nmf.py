@@ -52,7 +52,8 @@ def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6
 
         # ==== evaluation ====
         if i % print_step == 0 or i == 1 or i == max_iter:
-            print 'Iteration {}:'.format(i),
+            if messages:
+                print 'Iteration {}:'.format(i),
             X_est = dot(A, Y)
             err = mask * (X_est_prev - X_est)
             fit_residual = np.sqrt(np.sum(err ** 2))
