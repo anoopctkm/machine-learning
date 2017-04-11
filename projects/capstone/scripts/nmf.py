@@ -10,7 +10,7 @@ import numpy as np
 from scipy import linalg
 from numpy import dot
 
-def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6, print_step=10):
+def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6, print_step=None):
     """
     Decompose X to A*Y
     """
@@ -50,7 +50,7 @@ def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6
 
 
         # ==== evaluation ====
-        if i % print_step == 0 or i == 1 or i == max_iter:
+        if i is not None and (i % print_step == 0 or i == 1 or i == max_iter):
             print 'Iteration {}:'.format(i),
             X_est = dot(A, Y)
             err = mask * (X_est_prev - X_est)
@@ -63,4 +63,5 @@ def nmf(X, latent_features, max_iter=100, error_limit=1e-6, fit_error_limit=1e-6
             if curRes < error_limit or fit_residual < fit_error_limit:
                 break
 
+    print 'NMF decomposition complete.'
     return A, Y
