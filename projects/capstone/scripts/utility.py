@@ -24,3 +24,5 @@ def float_scatter_matrix(df):
 
 def rmse(true, predicted):
 	return sqrt(mean_squared_error(true, predicted))
+
+
