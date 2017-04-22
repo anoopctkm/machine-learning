@@ -31,10 +31,14 @@ Unlike the rating data for which user's score are unknown, information from the 
 In summary, the goal is to create a recommender system that will predict users' ratings of new movies, given that an external source of information about the movie (e.g., from IMDB) is avialable.
 
 ### Metrics
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
-- _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
 
+Given a data set of known movie ratings, models investigating this problem can be evaluated by the accuracy of their predictions. For this project, these ratings will be treated as a continuous variable. Therefore, an appropriate metric for evaluating model performance will be the [root mean square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). This has been the metric used in similar problems such as the famous [Netflix Prize](https://en.wikipedia.org/wiki/Netflix_Prize)).
+
+The RMSE is calculated by squaring the error terms (residuals) for predictions on a given set of data points, calculating the means of these, and taking the square root. For a vector of true values (*y*'s) and corresponding predicted values (*y*-hat), the formula for calculating RMSE is shown below:
+
+![RMSE formula](http://statweb.stanford.edu/~susan/courses/s60/split/img29.png)
+
+A value of zero indicates that all predictions perfectly match the true values. The more positive the value, the worse the performance.
 
 ## II. Analysis
 _(approx. 2-4 pages)_
