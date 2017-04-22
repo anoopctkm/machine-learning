@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 Simon Jackson
-April 22nd, 2017
+April 19th, 2017
 
 ## I. Definition
 _(approx. 1-2 pages)_
@@ -18,18 +18,17 @@ In this project I will compare the ability of various recommender systems to pre
 
 Imagine you work at Netflix and have added new movies to the service. You'd like to recommend these to people who will like them. To determine whether a particular user might like one of these movies, it's impossible to see if other, similar users like the movie (because it's new and hasn't been rated). It's also challenging to see how the user rated other similar movies, because user ratings are relatively sparse.
 
-This problem of estimating user ratings for new movies can be visualised below. In this Figure, user ratings for movies are represented in a sparse matrix. A new movie is introduced for which no user ratings exist. The problem is to estimate the user ratings for the new movie (where "?" appears).
+This problem of estimating user ratings for new movies can be visualised in the Figure below. In this Figure, users are represented as rows, and movies in the data base as columns. Cells are populated with user ratings (from 1 to 5), which are sparse. The right-most column represents the introduction of a new movie for which no user ratings exist. The problem is to estimate the ratings for these cells denoted "?".
 
 ![challenge](https://photos-3.dropbox.com/t/2/AADLh5XmKsfEt3kllBiwU342HlAfeED_sY9ORN9PcMV30Q/12/77888419/png/32x32/3/1492837200/0/2/challenge.png/EL6rtzwYpL0WIAIoAg/ThzuElUMwWYGzx6zd-CmLH8iDeSr5NRO4lhDft3V3OQ?dl=0&size=2048x1536&size_mode=3)
 
-This project will attempt to solve this problem by investigating a hybrid recommender system for predicting the 5-star rating a person will give a new, unrated movie. A collaborative filtering component will link a given user to other similar users, and movie preferences can be pooled over the entire group of similar users. This can be used to estimate the preferences of many already-existing movies, which can be used by a content-filtering component to make the final prediction.
+In order to estimate these ratings, a separate source of information is required: features about the movies. In this project, this information will be features scraped from the movie review site, IMDB. The Figure below represents an example of how this data looks.
 
-In summary, the goal is to create a recommender system that will predict users' ratings of new movies.
+![imdb](https://photos-6.dropbox.com/t/2/AAApz8VWXMzy_CXuztiRu7UujKw80D3O9zddy9V3Uw1BgQ/12/77888419/png/32x32/3/1492848000/0/2/imdb.png/EL6rtzwYpb0WIAIoAg/GBeF79cVtzg9niRrMeKw-m4UvqheS0cfRcv3DTtV9Wk?dl=0&size=2048x1536&size_mode=3)
 
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
-- _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
-- _Have you thoroughly discussed how you will attempt to solve the problem?_
-- _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
+Unlike the rating data for which user's score are unknown, information from the IMDB data base is known for all movies, including those being newly added for which the ratings wish to be estimated. This information makes it possible to determine how similar the new movie is to movies that already exist in the user-rated data base. These similarity scores can be used to derive rating estimates.
+
+In summary, the goal is to create a recommender system that will predict users' ratings of new movies, given that an external source of information about the movie (e.g., from IMDB) is avialable.
 
 ### Metrics
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
