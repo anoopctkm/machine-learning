@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 Simon Jackson
-April 19th, 2017
+April 22nd, 2017
 
 ## I. Definition
 _(approx. 1-2 pages)_
@@ -15,6 +15,17 @@ Recommender systems often take the form of collaborative or content-based filter
 In this project I will compare the ability of various recommender systems to predict how different users will rate movies (out of 5-stars) that have **not been rated by any users**. This problem prohibits the use of purely collaborative filtering approaches, instead depending on content-based or hybrid recommender systems. These systems will be trained by combining information from the [MovieLens 20M](https://www.kaggle.com/grouplens/movielens-20m-dataset) and [IMDB 5000 Movie](https://www.kaggle.com/deepmatrix/imdb-5000-movie-dataset) datasets, which are both available via the online machine learning challenge platform, [Kaggle](https://www.kaggle.com/).
 
 ### Problem Statement
+
+Imagine you work at Netflix and have added new movies to the service. You'd like to recommend these to people who will like them. To determine whether a particular user might like one of these movies, it's impossible to see if other, similar users like the movie (because it's new and hasn't been rated). It's also challenging to see how the user rated other similar movies, because user ratings are relatively sparse.
+
+This problem of estimating user ratings for new movies can be visualised below. In this Figure, user ratings for movies are represented in a sparse matrix. A new movie is introduced for which no user ratings exist. The problem is to estimate the user ratings for the new movie (where "?" appears).
+
+![challenge](https://photos-3.dropbox.com/t/2/AADLh5XmKsfEt3kllBiwU342HlAfeED_sY9ORN9PcMV30Q/12/77888419/png/32x32/3/1492837200/0/2/challenge.png/EL6rtzwYpL0WIAIoAg/ThzuElUMwWYGzx6zd-CmLH8iDeSr5NRO4lhDft3V3OQ?dl=0&size=2048x1536&size_mode=3)
+
+This project will attempt to solve this problem by investigating a hybrid recommender system for predicting the 5-star rating a person will give a new, unrated movie. A collaborative filtering component will link a given user to other similar users, and movie preferences can be pooled over the entire group of similar users. This can be used to estimate the preferences of many already-existing movies, which can be used by a content-filtering component to make the final prediction.
+
+In summary, the goal is to create a recommender system that will predict users' ratings of new movies.
+
 In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
 - _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
 - _Have you thoroughly discussed how you will attempt to solve the problem?_
