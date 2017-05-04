@@ -20,11 +20,11 @@ Imagine you work at Netflix and have added new movies to the service. You'd like
 
 This problem of estimating user ratings for new movies can be visualised in the Figure below. In this Figure, users are represented as rows, and movies in the data base as columns. Cells are populated with user ratings (from 1 to 5), which are sparse. The right-most column represents the introduction of a new movie for which no user ratings exist. The problem is to estimate the ratings for these cells denoted "?".
 
-![challenge](https://photos-3.dropbox.com/t/2/AADLh5XmKsfEt3kllBiwU342HlAfeED_sY9ORN9PcMV30Q/12/77888419/png/32x32/3/1492837200/0/2/challenge.png/EL6rtzwYpL0WIAIoAg/ThzuElUMwWYGzx6zd-CmLH8iDeSr5NRO4lhDft3V3OQ?dl=0&size=2048x1536&size_mode=3)
+![challenge](https://github.com/drsimonj/machine-learning/blob/master/projects/capstone/imgs/challenge.png?raw=true)
 
 In order to estimate these ratings, a separate source of information is required: features about the movies. In this project, this information will be features scraped from the movie review site, IMDB. The Figure below represents an example of how this data looks.
 
-![imdb](https://photos-6.dropbox.com/t/2/AAApz8VWXMzy_CXuztiRu7UujKw80D3O9zddy9V3Uw1BgQ/12/77888419/png/32x32/3/1492848000/0/2/imdb.png/EL6rtzwYpb0WIAIoAg/GBeF79cVtzg9niRrMeKw-m4UvqheS0cfRcv3DTtV9Wk?dl=0&size=2048x1536&size_mode=3)
+![imdb](https://github.com/drsimonj/machine-learning/blob/master/projects/capstone/imgs/imdb.png?raw=true)
 
 Unlike the rating data for which user's score are unknown, information from the IMDB data base is known for all movies, including those being newly added for which the ratings wish to be estimated. This information makes it possible to determine how similar the new movie is to movies that already exist in the user-rated data base. These similarity scores can be used to derive rating estimates.
 
@@ -86,6 +86,17 @@ In this section, you will need to provide some form of visualization that summar
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
 
 ### Algorithms and Techniques
+
+This project will compare two methods for estimating users ratings for new movies: content-based filtering and a hybrid approach of content-based and collaborative filtering.
+
+1. Content-based filtering involves a **k-nearest neighbours** algorithm. For example, take a new movie `m` and all of a user's existing ratings `U = {rating-movie.i, rating-movie.j, ...}`.  An estimate of the user's rating for `m` can be obtained by using ratings from the `k`-most similar movies to `m` rated by the user. There are a few major considerations for this algorithm:
+    - how similarity is computed
+    - the value of `k`
+    - how to combine ratings to produce an estimate
+2. An issue with the content-based filtering only is the sparsity of the data. For example, what if the user has only rated movies that are very dissimilar to `m`? To solve this, collaborative filtering can be used to estiamte missing data within rated movies. These estimates, in turn, can be used by the content-based filtering appraoch described above. Combined, this approach is a hybrid recommender system. One of the most successful collaborative filtering algorithms for estimating sparse rating data in **non-negative matrix factorisation**. This approach attempts to factorise the user-by-movie rating matrix into two smaller matrices which can be multipled together to reproduce the original matrix. In this way, the smaller matrices can be estimated by ignoring missing values and then, when multipled back together, produce estiamtes in missing cells. The major consideration for this algorithm:
+    - How many latent factors to factorise, `p`. That is, if the main matrix is of dimensions  `m x n`, then the two smaller matrices will be of dimensions `m x p` and `p x n`.
+
+
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
 - _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
 - _Are the techniques to be used thoroughly discussed and justified?_
