@@ -129,6 +129,22 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If no preprocessing is needed, has it been made clear why?_
 
 ### Implementation
+
+Implementation was split into three main stages:
+
+1. Developing a content-based filtering recommender for new movies using k-nearest-neighbours
+2. Developing a collaborative-based filtering recommnder for existing movies using non-negative matrix factorisation
+3. Developing a hybrid recommender system for new movies
+
+Details of how each step was executed is described below.
+
+#### Step 1: developing content-based filtering recommender
+
+This step involved developing a content-based filtering recommender that acts similarly to the benchmark model (by computing the mean of ratings), but in a more informed way. Specifically, rather than computing the mean of all a user's ratings, this approach first calcualtes the similarity of the new movie to each rated movie, and computes the mean based on ratings from the k-most similar rated movies. This step involved
+
+- Finding a method that best captured "similarity" among movies
+- Given similarity scores, finding a value of `k` that provided the best predictions
+
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
 - _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
 - _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
