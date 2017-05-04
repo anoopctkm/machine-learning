@@ -257,6 +257,18 @@ Name: movie_title, dtype: object
 
 These results appear to be excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
 
+XXXXXXXXXXXXXXXXXX
+
+Using the simliarty metric defined in the stages above, the k-nearest neighbours approach described above was used to estimate movie ratings. As with the benchmark model, leave-one-out cross validation was conducted to derive performance metrics. The model was fit using five values of `k`: 10, 20, 30, 40, and 50. The results were as follows:
+
+Using 10-most similar movies...	RMSE = 0.8787
+Using 20-most similar movies...	RMSE = 0.8717
+Using 30-most similar movies...	RMSE = 0.8712
+Using 40-most similar movies...	RMSE = 0.8717
+Using 50-most similar movies...	RMSE = 0.8732
+
+In all cases, the RMSE was better than the benchmark model, indicating that this was a useful approach to take. Comparing the results for different values of `k`, 30 was determined to be the most suitable.
+
 
 
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
