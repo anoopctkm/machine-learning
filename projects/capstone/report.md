@@ -138,12 +138,20 @@ Implementation was split into three main stages:
 
 Details of how each step was executed is described below.
 
-#### Step 1: developing content-based filtering recommender
+#### Step 1: content-based filtering
 
 This step involved developing a content-based filtering recommender that acts similarly to the benchmark model (by computing the mean of ratings), but in a more informed way. Specifically, rather than computing the mean of all a user's ratings, this approach first calcualtes the similarity of the new movie to each rated movie, and computes the mean based on ratings from the k-most similar rated movies. This step involved
 
 - Finding a method that best captured "similarity" among movies
 - Given similarity scores, finding a value of `k` that provided the best predictions
+
+#### Step 2: collaborative filtering
+
+This step involves developing a collaborative-filtering recommender for movies already in the data base (which could be used by a hybrid recommender in step 3). This involved applying non-negative matrix factorisation (using stochastic gradient descent to handle missing values) to the full user-by-movie rating matrix. Tuning was required to determine the optimal number of latent dimensions that best estaimted ratings.
+
+#### Step 3: hybrid
+
+This step involved combining steps 1 and 2. The collaborative filtering method developed in Step 2 was used to fill in the sparse ratings data. Then, the content-based recommender developed in Step 1 was used to estimate ratings for new movies.
 
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
 - _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
