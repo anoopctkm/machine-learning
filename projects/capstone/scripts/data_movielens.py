@@ -32,7 +32,7 @@ def prep(data_directory, imdb_ids):
     # Retain only movies appearing in the IMDB data set
     data = data[data['imdb_id'].isin(imdb_ids)]
 
-    print '- Movies not appearing in IMDB dataset dropped'
+    print '- Movies not appearing in IMDB dataset dropped, leaving {} rows and {} columns'.format(*data.shape)
 
 
     # Retain users who have made k or more ratings, which helps to:
