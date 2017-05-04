@@ -72,6 +72,8 @@ The major steps taken to initially clean the data and prepare it for analysis ar
     - User ratings were given to many more movies that those included in the IMDB data set. For this project, however, only movies that existed in both data sets were of interest. Therefore, user ratings given to movies that did not exist in the IMDB data set were removed, leaving 13,426,294 ratings. Doing this cleaning involved finding a common identifier for movies across the datasets. This common identifier was the identifier assigned to each movie by IMDB. This information was stored in a hashtable in the MovieLens data set, which could be bound to user ratings. The same ID could be extracted from the movie URL from the IMDB data set in the "movie_imdb_link" column. For example, the URL for James Cameron's Avatar was "http://www.imdb.com/title/tt0499549/?ref_=fn_tt_tt_1". The movie ID is "0499549", which is prefixed by "tt". The regular expression (regex) '(tt[0-9]+)' was used to extract this value from each URL, and then the "tt" was removed. This process resulted in both datasets containing a common movie ID, which was used to drop user ratings for movies that did not exist in the IMDB data set.
 - **Retaining data only for users with many ratings**
     - Mentioned above, a significant number of ratings were still kept. When transformed to a user-by-movie-dataset, this matrix was huge. This project had to be executed on a basic laptop that did not possess the hardware needed to operate on such a large data set. Therefore, to reduce the data set size ratings from a sample of users were retained. Given the sparsity of the data, ratings were retained for users who had given at least 1000 movie ratings. This left 487,691 ratings given by 385 unique users.
+-  **Converting user ratings into a sparse matrix**
+    - The final 487,691 ratings were converted into a sparse 385 (users) x 4919 (movies) matrix.
 
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
@@ -103,6 +105,15 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 ### Benchmark
+
+As a benchmark, the estimated rating of a new movie by a given user will be calculated as the mean of all of the user's existing ratings. This estimate represents the typical rating assigned by a user to movies, and therefore serves as an appropriate benchmark. The Figure below demonstrates this benchmark approach for a new movie and existing ratings:
+
+![benchmark](https://github.com/drsimonj/machine-learning/blob/master/projects/capstone/imgs/benchmark.png?raw=true)
+
+The performance of this benchmark approach was established using the user-by-movie-ratings matrix via a leave-one-out cross validation. That is, for each movie (column) in the matrix, user-wise (row-wise) means were computed for all other available ratings as estimates of users' ratings for that movie. Once the entire matrix was reconstructed via this approach, RMSE (see [Metrics](#metrics])) was calcualted for all known ratings.
+
+**The RMSE for the benchmark model was 0.9396**
+
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
 - _Has some result or value been provided that acts as a benchmark for measuring performance?_
 - _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
@@ -118,12 +129,148 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If no preprocessing is needed, has it been made clear why?_
 
 ### Implementation
+
+Implementation was split into three main stages:
+
+1. Developing a content-based filtering recommender for new movies using k-nearest-neighbours
+2. Developing a collaborative-based filtering recommnder for existing movies using non-negative matrix factorisation
+3. Developing a hybrid recommender system for new movies
+
+Details of how each step was executed is described below.
+
+#### Step 1: content-based filtering
+
+This step involved developing a content-based filtering recommender that acts similarly to the benchmark model (by computing the mean of ratings), but in a more informed way. Specifically, rather than computing the mean of all a user's ratings, this approach first calcualtes the similarity of the new movie to each rated movie, and computes the mean based on ratings from the k-most similar rated movies. This step involved
+
+- Finding a method that best captured "similarity" among movies
+- Given similarity scores, finding a value of `k` that provided the best predictions
+
+#### Step 2: collaborative filtering
+
+This step involves developing a collaborative-filtering recommender for movies already in the data base (which could be used by a hybrid recommender in step 3). This involved applying non-negative matrix factorisation (using stochastic gradient descent to handle missing values) to the full user-by-movie rating matrix. Tuning was required to determine the optimal number of latent dimensions that best estaimted ratings.
+
+#### Step 3: hybrid
+
+This step involved combining steps 1 and 2. The collaborative filtering method developed in Step 2 was used to fill in the sparse ratings data. Then, the content-based recommender developed in Step 1 was used to estimate ratings for new movies.
+
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
 - _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
 - _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
 - _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
 
 ### Refinement
+
+Similarity between movies was calcualted as cosine similarity << Should define...>>. A challenge was to determine which variables from the IMDB dataset would work best. Various combinations of variables were tested. To validate this method, a handful of movies known well to the author (especially ones that were part of a series) were selected for analysis. When a set of variables was tried, the 5-10 most similar movies to these validation movies was examined. Based on the authors knowledge of which movies were similar (and those known to be in the same series), a judgement call was made about which variable combinations worked best.
+
+To demonstrate, below are the most similar movies to "Pirates of the Caribbean: At World's End" based on different variable sets:
+
+- *Using all variables*: Carlos; Spy Game; Superman; Street Fighter
+- *Using Genres only*: The Legend of Hercules; Indiana Jones and the Last Crusade; Warcraft; Gods of Egypt
+- *Using Genre, rating, gross, cast likes*: Pirates of the Caribbean: The Curse of the Black Pearl; Pirates of the Caribbean: Dead Man's Chest; Pirates of the Caribbean: On Stranger Tides
+
+It was clear that using all variables did not produce good results. Selecting too few (e.g., just the one-hot-encoded genre variables) was not accurate either. Rather, a combination of genre, rating, and the continuous variables produced reasonable results.
+
+To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a prior that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The results was that six components accounted for precisely 90% of the variance.
+
+At this point, the movie similarity approach was tried again using one-hot-encoded variables relating to genre and rating, and the six principle components derived from the continuous variables. Below are the results of some tests:
+
+```
+MOVIES THAT ARE MOST SIMILAR TO: Harry Potter and the Half-Blood Prince  
+
+200               Harry Potter and the Sorcerer's Stone 
+64     The Chronicles of Narnia: The Lion, the Witch ...
+144                                                 Pan 
+38                            Oz the Great and Powerful 
+374                      Percy Jackson: Sea of Monsters 
+193            Harry Potter and the Prisoner of Azkaban 
+282             Harry Potter and the Chamber of Secrets 
+9                Harry Potter and the Half-Blood Prince 
+33                                  Alice in Wonderland 
+106                     Alice Through the Looking Glass 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: The Avengers  
+
+52                             Pacific Rim 
+112                           Transformers 
+53          Transformers: Dark of the Moon 
+86     Captain America: The Winter Soldier 
+65                       X-Men: Apocalypse 
+8                  Avengers: Age of Ultron 
+10      Batman v Superman: Dawn of Justice 
+11                        Superman Returns 
+27              Captain America: Civil War 
+17                            The Avengers 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: The Hunger Games: Catching Fire  
+
+216                   The Day After Tomorrow 
+236                            The Wolverine 
+97                                 Inception 
+29                            Jurassic World 
+689                            Jurassic Park 
+187                        War of the Worlds 
+433                         The Hunger Games 
+253                                Insurgent 
+204    The Hunger Games: Mockingjay - Part 1 
+185          The Hunger Games: Catching Fire 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: Pirates of the Caribbean: The Curse of the Black Pearl  
+
+133                                  Wrath of the Titans 
+1030                  Indiana Jones and the Last Crusade 
+54      Indiana Jones and the Kingdom of the Crystal S...
+210                                  Clash of the Titans 
+13            Pirates of the Caribbean: Dead Man's Chest 
+18           Pirates of the Caribbean: On Stranger Tides 
+127                                 Thor: The Dark World 
+1               Pirates of the Caribbean: At World's End 
+202     Pirates of the Caribbean: The Curse of the Bla...
+21                                The Amazing Spider-Man 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: Star Wars: Episode VI - Return of the Jedi  
+
+2394                               Conan the Destroyer 
+3418                                       Logan's Run 
+2876                   Star Trek II: The Wrath of Khan 
+40                                        TRON: Legacy 
+1068                Journey to the Center of the Earth 
+2031    Star Wars: Episode V - The Empire Strikes Back 
+237          Star Wars: Episode I - The Phantom Menace 
+234       Star Wars: Episode II - Attack of the Clones 
+1521        Star Wars: Episode VI - Return of the Jedi 
+2974                Star Wars: Episode IV - A New Hope 
+Name: movie_title, dtype: object
+******************************************************** 
+```
+
+These results appear to be excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
+
+XXXXXXXXXXXXXXXXXX
+
+Using the simliarty metric defined in the stages above, the k-nearest neighbours approach described above was used to estimate movie ratings. As with the benchmark model, leave-one-out cross validation was conducted to derive performance metrics. The model was fit using five values of `k`: 10, 20, 30, 40, and 50. The results were as follows:
+
+Using 10-most similar movies...	RMSE = 0.8787
+Using 20-most similar movies...	RMSE = 0.8717
+Using 30-most similar movies...	RMSE = 0.8712
+Using 40-most similar movies...	RMSE = 0.8717
+Using 50-most similar movies...	RMSE = 0.8732
+
+In all cases, the RMSE was better than the benchmark model, indicating that this was a useful approach to take. Comparing the results for different values of `k`, 30 was determined to be the most suitable.
+
+
+
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
 - _Has an initial solution been found and clearly reported?_
 - _Is the process of improvement clearly documented, such as what techniques were used?_
