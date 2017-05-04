@@ -159,6 +159,106 @@ In this section, the process for which metrics, algorithms, and techniques that 
 - _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
 
 ### Refinement
+
+Similarity between movies was calcualted as cosine similarity << Should define...>>. A challenge was to determine which variables from the IMDB dataset would work best. Various combinations of variables were tested. To validate this method, a handful of movies known well to the author (especially ones that were part of a series) were selected for analysis. When a set of variables was tried, the 5-10 most similar movies to these validation movies was examined. Based on the authors knowledge of which movies were similar (and those known to be in the same series), a judgement call was made about which variable combinations worked best.
+
+To demonstrate, below are the most similar movies to "Pirates of the Caribbean: At World's End" based on different variable sets:
+
+- *Using all variables*: Carlos; Spy Game; Superman; Street Fighter
+- *Using Genres only*: The Legend of Hercules; Indiana Jones and the Last Crusade; Warcraft; Gods of Egypt
+- *Using Genre, rating, gross, cast likes*: Pirates of the Caribbean: The Curse of the Black Pearl; Pirates of the Caribbean: Dead Man's Chest; Pirates of the Caribbean: On Stranger Tides
+
+It was clear that using all variables did not produce good results. Selecting too few (e.g., just the one-hot-encoded genre variables) was not accurate either. Rather, a combination of genre, rating, and the continuous variables produced reasonable results.
+
+To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a prior that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The results was that six components accounted for precisely 90% of the variance.
+
+At this point, the movie similarity approach was tried again using one-hot-encoded variables relating to genre and rating, and the six principle components derived from the continuous variables. Below are the results of some tests:
+
+```
+MOVIES THAT ARE MOST SIMILAR TO: Harry Potter and the Half-Blood Prince  
+
+200               Harry Potter and the Sorcerer's Stone 
+64     The Chronicles of Narnia: The Lion, the Witch ...
+144                                                 Pan 
+38                            Oz the Great and Powerful 
+374                      Percy Jackson: Sea of Monsters 
+193            Harry Potter and the Prisoner of Azkaban 
+282             Harry Potter and the Chamber of Secrets 
+9                Harry Potter and the Half-Blood Prince 
+33                                  Alice in Wonderland 
+106                     Alice Through the Looking Glass 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: The Avengers  
+
+52                             Pacific Rim 
+112                           Transformers 
+53          Transformers: Dark of the Moon 
+86     Captain America: The Winter Soldier 
+65                       X-Men: Apocalypse 
+8                  Avengers: Age of Ultron 
+10      Batman v Superman: Dawn of Justice 
+11                        Superman Returns 
+27              Captain America: Civil War 
+17                            The Avengers 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: The Hunger Games: Catching Fire  
+
+216                   The Day After Tomorrow 
+236                            The Wolverine 
+97                                 Inception 
+29                            Jurassic World 
+689                            Jurassic Park 
+187                        War of the Worlds 
+433                         The Hunger Games 
+253                                Insurgent 
+204    The Hunger Games: Mockingjay - Part 1 
+185          The Hunger Games: Catching Fire 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: Pirates of the Caribbean: The Curse of the Black Pearl  
+
+133                                  Wrath of the Titans 
+1030                  Indiana Jones and the Last Crusade 
+54      Indiana Jones and the Kingdom of the Crystal S...
+210                                  Clash of the Titans 
+13            Pirates of the Caribbean: Dead Man's Chest 
+18           Pirates of the Caribbean: On Stranger Tides 
+127                                 Thor: The Dark World 
+1               Pirates of the Caribbean: At World's End 
+202     Pirates of the Caribbean: The Curse of the Bla...
+21                                The Amazing Spider-Man 
+Name: movie_title, dtype: object
+******************************************************** 
+
+
+MOVIES THAT ARE MOST SIMILAR TO: Star Wars: Episode VI - Return of the Jedi  
+
+2394                               Conan the Destroyer 
+3418                                       Logan's Run 
+2876                   Star Trek II: The Wrath of Khan 
+40                                        TRON: Legacy 
+1068                Journey to the Center of the Earth 
+2031    Star Wars: Episode V - The Empire Strikes Back 
+237          Star Wars: Episode I - The Phantom Menace 
+234       Star Wars: Episode II - Attack of the Clones 
+1521        Star Wars: Episode VI - Return of the Jedi 
+2974                Star Wars: Episode IV - A New Hope 
+Name: movie_title, dtype: object
+******************************************************** 
+```
+
+These results appear to be excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
+
+
+
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
 - _Has an initial solution been found and clearly reported?_
 - _Is the process of improvement clearly documented, such as what techniques were used?_
