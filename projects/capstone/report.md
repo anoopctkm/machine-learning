@@ -160,6 +160,8 @@ In this section, the process for which metrics, algorithms, and techniques that 
 
 ### Refinement
 
+#### Step 1: content-based filtering
+
 Similarity between movies was calcualted as cosine similarity << Should define...>>. A challenge was to determine which variables from the IMDB dataset would work best. Various combinations of variables were tested. To validate this method, a handful of movies known well to the author (especially ones that were part of a series) were selected for analysis. When a set of variables was tried, the 5-10 most similar movies to these validation movies was examined. Based on the authors knowledge of which movies were similar (and those known to be in the same series), a judgement call was made about which variable combinations worked best.
 
 To demonstrate, below are the most similar movies to "Pirates of the Caribbean: At World's End" based on different variable sets:
@@ -170,7 +172,7 @@ To demonstrate, below are the most similar movies to "Pirates of the Caribbean: 
 
 It was clear that using all variables did not produce good results. Selecting too few (e.g., just the one-hot-encoded genre variables) was not accurate either. Rather, a combination of genre, rating, and the continuous variables produced reasonable results.
 
-To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a prior that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The results was that six components accounted for precisely 90% of the variance.
+To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a priori that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The results was that six components accounted for precisely 90% of the variance.
 
 At this point, the movie similarity approach was tried again using one-hot-encoded variables relating to genre and rating, and the six principle components derived from the continuous variables. Below are the results of some tests:
 
@@ -269,7 +271,40 @@ Using 50-most similar movies...	RMSE = 0.8732
 
 In all cases, the RMSE was better than the benchmark model, indicating that this was a useful approach to take. Comparing the results for different values of `k`, 30 was determined to be the most suitable.
 
+#### Step 2: collaborative filtering
 
+The collaorative filtering algorithm involved the use of non-negative matrix factorisation. Unlike content-based filtering, collaborative filtering cannot be used to predict new movie data. Instead, it is examined ehre as a potential method for filling in sparse rating data. This method attempts to find two matrices that, when multiplied together, best reproduce the original user-by-movie rating matrix. Specifically, given an original matrix of dimensions `n * m`, non-negative matrix factorisation finds two matrices `n * k` and `k * m` where, in this case, `k` represents a number of latent dimensions. Stochastic gradient descent is used to iteratively sample available data (this ignorning missing ratings) in order to derive the two matrices. With the two complete matrices, they can be multipled together to closely reproduce the original ratings as well as provide estimates in missing cells.
+
+This component was refined via k-fold cross-validation. Specifically, a number of values for `k` (latent dimensions) were chosen. Then, cells in the original data were randomly assigned to one of five "folds". For each `k` and fold, the following was done:
+
+- Set all cells in the fold to missing.
+- Conduct non-negative matrix factorisation on the matrix.
+- Multiply the resulting matrices together to reproduce the data.
+- Calculate the RMSE for cells in the fold.
+
+For each value of `k`, this is done once for each fold. The mean RMSE for the five folds is then computed as an indicator of the performance of `k`.
+
+Values for `k` that were first tested were 10, 40, 70, and 100. This yielded the following results:
+
+RMSE for 10 latent dimensions:	0.7597
+RMSE for 40 latent dimensions:	0.8356
+RMSE for 70 latent dimensions:	0.8911
+RMSE for 100 latent dimensions:	0.9327
+
+It was clear that lower values of `k` were performing better. The analysis was redone to test values of 2, 4, 6 and 8. The results were:
+
+RMSE for 2 latent dimensions:	0.7662
+RMSE for 4 latent dimensions:	0.7534
+RMSE for 6 latent dimensions:	0.9822
+RMSE for 8 latent dimensions:	0.7576
+
+Based on these results, 4 latent dimensions were chosen as the best option for estimating the sparse rating data.
+
+Again, it is important to note that these RMSE scores are based on estimating ratings for movies that other users have rated. Thus, although they are superior to the RMSE scores obtained for the benchmark and content-based approaches, this algorithm does not, by itself, solve the problem being addressed: to estimate scores for new movies.
+
+#### Step 3: hybrid
+
+The hybrid model did not involve any refinement and will, therefore, be reported in the results section below. 
 
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
 - _Has an initial solution been found and clearly reported?_
@@ -281,6 +316,18 @@ In this section, you will need to discuss the process of improvement you made up
 _(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
+
+Testing the final hybrid recommender to be tested involved the following steps: 
+
+- Randomly sample a proportion of movies to hold out as "new" movies. This proportion was set to 0.2.
+- Using the reamining data, use the collaborative filtering algorithm to fill in all missing rating data.
+- For each "new" movie, use the content-based filtering approach to estimate a rating for each user.
+
+The final RMSE of this model was 0.9784. It seems that this is worse than the benchmark model. This means that the use of true ratings (done by the content-based filtering algorithm alone) was superior to their combined use with ratings estimated via the collaborative-filtering method.
+
+Thus, the best-performing and final approach is the k-nearest-neighbours content-based filtering recommender system.
+
+
 In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
 - _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
 - _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
