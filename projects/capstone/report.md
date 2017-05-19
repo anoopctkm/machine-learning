@@ -325,7 +325,9 @@ Testing the final hybrid recommender to be tested involved the following steps:
 
 The final RMSE of this model was 0.9784. It seems that this is worse than the benchmark model. This means that the use of true ratings (done by the content-based filtering algorithm alone) was superior to their combined use with ratings estimated via the collaborative-filtering method.
 
-Thus, the best-performing and final approach is the k-nearest-neighbours content-based filtering recommender system.
+Thus, the best-performing and final approach is the k-nearest-neighbours content-based filtering recommender system. Given that the RMSE was established using leave-one-out cross validation, we can feel confident that these results reflect a robust ability for the model to generalise to new data.
+
+
 
 
 In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
@@ -335,6 +337,11 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Can results found from the model be trusted?_
 
 ### Justification
+
+To recap, the RMSE of the benchamrk model was 0.9396. The RMSE for the content-based filtering model (using 30-nearest neighbours) was 0.8712. This is a marked improvement over the benchmark model that is already fitting the data reasonably well, thus justifying its use for as a method for predicting user ratings for new movies.
+
+
+
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
 - _Are the final results found stronger than the benchmark result reported earlier?_
 - _Have you thoroughly analyzed and discussed the final solution?_
