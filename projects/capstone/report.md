@@ -151,6 +151,23 @@ In this section, you will need to provide a clearly defined benchmark result or 
 _(approx. 3-5 pages)_
 
 ### Data Preprocessing
+
+The following preprocessing steps were done for the **IMDB data set**:
+
+- IMDB movie id was extracted from the movie URL.
+- Duplicate movies were removed
+- All discrete variables were one-hot encoded
+- Missing values were imputed as the mean for continuous variables, as the mode for one-hot variables, and as 0 for gross (as movies with a missing gross value likley did not make a profit).
+- Continuous variables were transformed to adjust their distribution to be more normal. The transformations applied were to square root or log transform certain variables depending on their distribution.
+- Continuous variables were normalized to range between 0 and 1.
+
+The following preprocessing steps were done for the **MovieLens data set**:
+
+- IMDB movie id was linked to ratings by merging separate datasets.
+- Movies not appearing in the IMDB data set were removed.
+- Users who made fewer than 1000 ratings were dropped.
+
+
 In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
 - _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
 - _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
