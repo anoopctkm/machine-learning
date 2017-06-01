@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 Simon Jackson
-April 24th, 2017
+June 01, 2017
 
 ## I. Definition
 
@@ -27,7 +27,7 @@ In order to estimate these ratings, a separate source of information is required
 
 Unlike the rating data for which user's score are unknown, information from the IMDB data base is known for all movies, including those being newly added for which the ratings wish to be estimated. This information makes it possible to determine how similar the new movie is to movies that already exist in the user-rated data base. These similarity scores can be used to derive rating estimates.
 
-In summary, the goal is to create a recommender system that will predict users' ratings of new movies, given that an external source of information about the movie (e.g., from IMDB) is avialable.
+In summary, the goal is to create a recommender system that will predict users' ratings of new movies, given that an external source of information about the movie (e.g., from IMDB) is available.
 
 ### Metrics
 
@@ -65,7 +65,7 @@ The major steps taken to initially clean the data and prepare it for analysis ar
 - **Imputing missing values**
     - There were a number of missing values in the IMDB dataset. Missing values were present for cateogrical (one-hot encoded) and continuous variables. Missing values were imputed as the mode for categorical variables and as the mean for continuous variables. One exception to this was "gross", which recorded the movie's gross profit. Missing data here was more likley to indicate that no gross profit had been recorded or made. Thus, missing values were set to zero on this variale.
 - **Transform continuous variables**
-    - Continuous variables relating to the movies (e.g., "gross", "actor_1_facebook_likes") were transformed in two ways. First, variables that did not have a normal/gaussian distribution were operated on to make their distribution more normal. In all cases, the best option was to calculate the log value of the variable. Finally, each continuous variable was normalized to have a value between 0 and 1. This was because these variables were going to be used for computing similarity among movies. If there were on very different scales, then this may bias the simialrity algorithm.
+    - Continuous variables relating to the movies (e.g., "gross", "actor_1_facebook_likes") were transformed in two ways. First, variables that did not have a normal/gaussian distribution were operated on to make their distribution more normal. In most cases, the best option was to calculate the log value of the variable. In some, the square root of the variable was taken. Finally, each continuous variable was normalized to have a value between 0 and 1. This was because these variables were going to be used for computing similarity among movies. If they were on very different scales, then this may bias the simialrity algorithm.
 - **Retain data for movies only appearing in both data sets**
     - User ratings were given to many more movies that those included in the IMDB data set. For this project, however, only movies that existed in both data sets were of interest. Therefore, user ratings given to movies that did not exist in the IMDB data set were removed, leaving 13,426,294 ratings. Doing this cleaning involved finding a common identifier for movies across the datasets. This common identifier was the identifier assigned to each movie by IMDB. This information was stored in a hashtable in the MovieLens data set, which could be bound to user ratings. The same ID could be extracted from the movie URL from the IMDB data set in the "movie_imdb_link" column. For example, the URL for James Cameron's Avatar was "http://www.imdb.com/title/tt0499549/?ref_=fn_tt_tt_1". The movie ID is "0499549", which is prefixed by "tt". The regular expression (regex) '(tt[0-9]+)' was used to extract this value from each URL, and then the "tt" was removed. This process resulted in both datasets containing a common movie ID, which was used to drop user ratings for movies that did not exist in the IMDB data set.
 - **Retaining data only for users with many ratings**
@@ -79,15 +79,15 @@ Here we visually explore some descriptive information about the variables used t
 
 We will first explore discrete variables that were ultimately one-hot encoded:
 
-**Bar plot of movie ratings**
+**Frequency plot of movie ratings**
 ![movie ratings](https://www.dropbox.com/s/9eujw57ii080dyj/ratings_barplot.png?raw=true)
-This Figure depits the distribution of movie ratings. For example, a little over 2000 movies included in the analysis had a rating of "r", a little under 1550 had a rating of "pg-13", and so on. Most movies clearly had ratings of "r", "pg-13", and "pg".
+This Figure depicts the distribution of movie ratings. For example, a little over 2000 movies included in the analysis had a rating of "r", a little under 1550 had a rating of "pg-13", and so on. Most movies clearly had ratings of "r", "pg-13", and "pg".
 
-**Bar plot of movie genre tags**
+**Frequency plot of movie genre tags**
 ![movie genres](https://www.dropbox.com/s/ananz8g5ch1320l/genre_barplot.png?raw=true)
-This Figure shows the distribution of genre tags assigned to the movies included in this analysis. Note that, unlike movie ratings above, multiple movide tags could be assigned to a single movie. "Drama" was the most common genre tag, folloed by "comedy", "thriller", "action", and so on.
+This Figure shows the distribution of genre tags assigned to the movies included in this analysis. Note that, unlike movie ratings above, multiple genre tags could be assigned to each movie. "Drama" was the most common genre tag, followed by "comedy", "thriller", "action", and so on.
 
-Next we will examine some of the continuous variables that were submitted to Principal Components Analysis.
+Next we will examine some of the continuous variables that will be submitted to Principal Components Analysis in the modelling steps.
 
 **Scatter plot of movie credentials**
 ![movie credentials](https://www.dropbox.com/s/zci39wnhaxdrlsg/other_floats_scatterplot.png?raw=true)
@@ -99,7 +99,7 @@ This Figure shows the distribution and covariance between the number of facebook
 
 **Scatter plot of PCA**
 ![movie pca](https://www.dropbox.com/s/6whf1k0p1euvnhd/pca_dimensions_scatterplot.png?raw=true)
-This Figure shows the distributions and covariance structure among the six principal components extracted from all continuous variables in the IMDB dataset. As expected, all components are uncorrelated with eachother. A useful feature to note is that the components are normally distributed, unlike some of the raw features shown in the previous Figures.
+This Figure shows the distributions and covariance structure among the six principal components extracted from all continuous variables in the IMDB dataset (an operation conducted during the modelling phases described below). As expected, all components are uncorrelated with eachother. A useful feature to note is that the components are normally distributed, unlike some of the raw features shown in the previous Figures.
 
 ### Algorithms and Techniques
 
@@ -109,22 +109,24 @@ This project will compare two methods for estimating users ratings for new movie
     - how similarity is computed
     - the value of `k`
     - how to combine ratings to produce an estimate
-2. An issue with the content-based filtering only is the sparsity of the data. For example, what if the user has only rated movies that are very dissimilar to `m`? To solve this, collaborative filtering can be used to estiamte missing data within rated movies. These estimates, in turn, can be used by the content-based filtering appraoch described above. Combined, this approach is a hybrid recommender system. One of the most successful collaborative filtering algorithms for estimating sparse rating data in **non-negative matrix factorisation**. This approach attempts to factorise the user-by-movie rating matrix into two smaller matrices which can be multipled together to reproduce the original matrix. In this way, the smaller matrices can be estimated by ignoring missing values and then, when multipled back together, produce estiamtes in missing cells. The major consideration for this algorithm:
+2. An issue with the content-based filtering only is the sparsity of the data. For example, what if the user has only rated movies that are *dissimilar* to `m`? To solve this, collaborative filtering can be used to estimate missing data within rated movies. These estimates, in turn, can be used by the content-based filtering appraoch described above. Combined, this approach is a hybrid recommender system. One of the most successful collaborative filtering algorithms for estimating sparse rating data in **non-negative matrix factorisation**. This approach attempts to factorise the user-by-movie rating matrix into two smaller matrices which can be multipled together to reproduce the original matrix. In this way, the smaller matrices can be estimated by ignoring missing values and then, when multipled back together, produce estimates in missing cells. The major consideration for this algorithm:
     - How many latent factors to factorise, `p`. That is, if the main matrix is of dimensions  `m x n`, then the two smaller matrices will be of dimensions `m x p` and `p x n`.
 
 ### Benchmark
 
-As a benchmark, the estimated rating of a new movie by a given user will be calculated as the mean of all of the user's existing ratings. This estimate represents the typical rating assigned by a user to movies, and therefore serves as an appropriate benchmark. The Figure below demonstrates this benchmark approach for a new movie and existing ratings:
+As a benchmark, the estimated rating of a new movie by a given user will be calculated as the mean of all of the user's existing ratings. This estimate represents the typical rating assigned by a user to movies, and therefore serves as an appropriate and challenging benchmark. The Figure below demonstrates this benchmark approach for a new movie and existing ratings:
 
 ![benchmark](https://github.com/drsimonj/machine-learning/blob/master/projects/capstone/imgs/benchmark.png?raw=true)
 
-The performance of this benchmark approach was established using the user-by-movie-ratings matrix via a leave-one-out cross validation. That is, for each movie (column) in the matrix, user-wise (row-wise) means were computed for all other available ratings as estimates of users' ratings for that movie. Once the entire matrix was reconstructed via this approach, RMSE (see [Metrics](#metrics])) was calcualted for all known ratings.
+The performance of this benchmark approach was established using the user-by-movie-ratings matrix via a leave-one-out cross validation. That is, for each movie (column) in the matrix, user-wise (row-wise) means were computed for all other available ratings as estimates of users' ratings for that movie. Once the entire matrix was reconstructed via this approach, the RMSE (see [Metrics](#metrics])) was calculated for all known ratings.
 
 **The RMSE for the benchmark model was 0.9396**
 
 ## III. Methodology
 
 ### Data Preprocessing
+
+This section outlines the data preprocessing steps conducted on both data sets. The major steps taken in each are described in more detail above.
 
 The following preprocessing steps were done for the **IMDB data set**:
 
@@ -153,14 +155,14 @@ Details of how each step was executed is described below.
 
 #### Step 1: content-based filtering
 
-This step involved developing a content-based filtering recommender that acts similarly to the benchmark model (by computing the mean of ratings), but in a more informed way. Specifically, rather than computing the mean of all a user's ratings, this approach first calcualtes the similarity of the new movie to each rated movie, and computes the mean based on ratings from the k-most similar rated movies. This step involved
+This step involved developing a content-based filtering recommender that acts similarly to the benchmark model (by computing the mean of ratings), but in a more informed way. Specifically, rather than computing the mean of all of a user's ratings, this approach first calculates the similarity of the new movie to each rated movie, and computes the mean based on ratings from the k-most similar rated movies. This step involved
 
 - Finding a method that best captured "similarity" among movies
 - Given similarity scores, finding a value of `k` that provided the best predictions
 
 #### Step 2: collaborative filtering
 
-This step involves developing a collaborative-filtering recommender for movies already in the data base (which could be used by a hybrid recommender in step 3). This involved applying non-negative matrix factorisation (using stochastic gradient descent to handle missing values) to the full user-by-movie rating matrix. Tuning was required to determine the optimal number of latent dimensions that best estaimted ratings.
+This step involves developing a collaborative-filtering recommender for movies already in the data base (which could be used by a hybrid recommender in step 3). This involved applying non-negative matrix factorisation (using stochastic gradient descent to handle missing values) to the full user-by-movie rating matrix. Tuning was required to determine the optimal number of latent dimensions that best estimated ratings.
 
 #### Step 3: hybrid
 
@@ -170,7 +172,7 @@ This step involved combining steps 1 and 2. The collaborative filtering method d
 
 #### Step 1: content-based filtering
 
-Similarity between movies was calcualted as cosine similarity << Should define...>>. A challenge was to determine which variables from the IMDB dataset would work best. Various combinations of variables were tested. To validate this method, a handful of movies known well to the author (especially ones that were part of a series) were selected for analysis. When a set of variables was tried, the 5-10 most similar movies to these validation movies was examined. Based on the authors knowledge of which movies were similar (and those known to be in the same series), a judgement call was made about which variable combinations worked best.
+Similarity between movies was calculated as [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity), which captures the cosine angle between the feature vectors of two movies. A challenge was to determine which variables from the IMDB dataset would work best. Various combinations of variables were tested. To validate this method, a handful of movies known well to the author (especially ones that were part of a series) were selected for analysis. When a set of variables was tried, the 5-10 most similar movies to these validation movies was examined. The optimal variable combination was determined by the author given their knowledge of which movies were similar (and those known to be in the same series).
 
 To demonstrate, below are the most similar movies to "Pirates of the Caribbean: At World's End" based on different variable sets:
 
@@ -180,7 +182,7 @@ To demonstrate, below are the most similar movies to "Pirates of the Caribbean: 
 
 It was clear that using all variables did not produce good results. Selecting too few (e.g., just the one-hot-encoded genre variables) was not accurate either. Rather, a combination of genre, rating, and the continuous variables produced reasonable results.
 
-To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a priori that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The results was that six components accounted for precisely 90% of the variance.
+To further improve this, the twelve continuous variables were submitted to Principal Components Analysis in attempt to reduce the dimensional space being used by the cosine algorithm. It was decided a priori that as many components would be selected as accounted for at least 90% of the variance in these twelve variables. The result was that six components accounted for precisely 90% of the variance.
 
 At this point, the movie similarity approach was tried again using one-hot-encoded variables relating to genre and rating, and the six principle components derived from the continuous variables. Below are the results of some tests:
 
@@ -265,7 +267,7 @@ Name: movie_title, dtype: object
 ******************************************************** 
 ```
 
-These results appear to be excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
+These results were excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
 
 Using the simliarty metric defined in the stages above, the k-nearest neighbours approach described above was used to estimate movie ratings. As with the benchmark model, leave-one-out cross validation was conducted to derive performance metrics. The model was fit using five values of `k`: 10, 20, 30, 40, and 50. The results were as follows:
 
@@ -279,25 +281,25 @@ In all cases, the RMSE was better than the benchmark model, indicating that this
 
 #### Step 2: collaborative filtering
 
-The collaorative filtering algorithm involved the use of non-negative matrix factorisation. Unlike content-based filtering, collaborative filtering cannot be used to predict new movie data. Instead, it is examined ehre as a potential method for filling in sparse rating data. This method attempts to find two matrices that, when multiplied together, best reproduce the original user-by-movie rating matrix. Specifically, given an original matrix of dimensions `n * m`, non-negative matrix factorisation finds two matrices `n * k` and `k * m` where, in this case, `k` represents a number of latent dimensions. Stochastic gradient descent is used to iteratively sample available data (this ignorning missing ratings) in order to derive the two matrices. With the two complete matrices, they can be multipled together to closely reproduce the original ratings as well as provide estimates in missing cells.
+The collaborative filtering algorithm involved the use of non-negative matrix factorisation. Unlike content-based filtering, collaborative filtering cannot be used to predict new movie data. Instead, it is examined here as a potential method for filling in sparse rating data. This method attempts to find two matrices that, when multiplied together, best reproduce the original user-by-movie rating matrix. Specifically, given an original matrix of dimensions `n * m`, non-negative matrix factorisation finds two matrices `n * p` and `p * m` where, in this case, `p` represents a number of latent dimensions. Stochastic gradient descent is used to iteratively sample available data (ignorning missing ratings) in order to derive the two matrices. The two complete matrices can be multipled together to closely reproduce the original ratings as well as provide estimates in missing cells.
 
-This component was refined via k-fold cross-validation. Specifically, a number of values for `k` (latent dimensions) were chosen. Then, cells in the original data were randomly assigned to one of five "folds". For each `k` and fold, the following was done:
+This component was refined via k-fold cross-validation. Specifically, a number of values for `p` (latent dimensions) were chosen. Then, cells in the original data were randomly assigned to one of five "folds". For each `p` and fold, the following was done:
 
 - Set all cells in the fold to missing.
 - Conduct non-negative matrix factorisation on the matrix.
 - Multiply the resulting matrices together to reproduce the data.
 - Calculate the RMSE for cells in the fold.
 
-For each value of `k`, this is done once for each fold. The mean RMSE for the five folds is then computed as an indicator of the performance of `k`.
+For each value of `p`, this is done once for each fold. The mean RMSE for the five folds is then computed as an indicator of the performance of `p`.
 
-Values for `k` that were first tested were 10, 40, 70, and 100. This yielded the following results:
+Values for `p` that were first tested were 10, 40, 70, and 100. This yielded the following results:
 
 RMSE for 10 latent dimensions:	0.7597
 RMSE for 40 latent dimensions:	0.8356
 RMSE for 70 latent dimensions:	0.8911
 RMSE for 100 latent dimensions:	0.9327
 
-It was clear that lower values of `k` were performing better. The analysis was redone to test values of 2, 4, 6 and 8. The results were:
+It was clear that lower values of `p` were performing better. The analysis was redone to test values of 2, 4, 6 and 8. The results were:
 
 RMSE for 2 latent dimensions:	0.7662
 RMSE for 4 latent dimensions:	0.7534
@@ -316,10 +318,10 @@ The hybrid model did not involve any refinement and will, therefore, be reported
 
 ### Model Evaluation and Validation
 
-Testing the final hybrid recommender to be tested involved the following steps: 
+Testing the final hybrid recommender involved the following steps: 
 
 - Randomly sample a proportion of movies to hold out as "new" movies. This proportion was set to 0.2.
-- Using the reamining data, use the collaborative filtering algorithm to fill in all missing rating data.
+- Using the remaining data, use the collaborative filtering algorithm to fill in all missing rating data.
 - For each "new" movie, use the content-based filtering approach to estimate a rating for each user.
 
 The final RMSE of this model was 0.9784. It seems that this is worse than the benchmark model. This means that the use of true ratings (done by the content-based filtering algorithm alone) was superior to their combined use with ratings estimated via the collaborative-filtering method.
@@ -328,7 +330,7 @@ Thus, the best-performing and final approach is the k-nearest-neighbours content
 
 ### Justification
 
-To recap, the RMSE of the benchamrk model was 0.9396. The RMSE for the content-based filtering model (using 30-nearest neighbours) was 0.8712. This is a marked improvement over the benchmark model that is already fitting the data reasonably well, thus justifying its use for as a method for predicting user ratings for new movies.
+To recap, the RMSE of the benchamrk model was 0.9396. The RMSE for the content-based filtering model (using 30-nearest neighbours) was 0.8712. This is a marked improvement over the benchmark model that is already fitting the data reasonably well, thus justifying its use as a method for predicting user ratings for new movies.
 
 ## V. Conclusion
 
@@ -340,13 +342,13 @@ For me, the discovery and use of non-negative matrix factorisation was most inte
 
 Despite this useful tecnique, I found model refinement particularly difficult. It has been demonstrated empirically that collaborative-filtering algorithms produce better rating estimates than content-based filtering. In this project, the final solution required content-based filtering, therefore making predictions particularly difficult.
 
-I believe that the final solution is useful for making "best-guess" predictions of user ratings for new movies. Of course, the accuracy of those predictions will be far from perfect. Still, the solution provides a fast and simple approach for helping to personalise new movie recommendations that will likley improve customer experiences over and above basic benchmark approaches.
+I believe that the final solution is useful for making "best-guess" predictions of user ratings for new movies. Of course, the accuracy of those predictions will be far from perfect. Still, the solution provides a fast and simple approach for helping to personalise new movie recommendations that will likley improve customer experiences over and above basic benchmark approaches, until user rating data can be gathered.
 
 ### Improvement
 
 In this project, I opted to investigate a "best case" scenario, where users had each provided many ratings. This was done, in part, because the user data base had to be reduced to make the computations possible on my local machine. For a real movie recommender system to be tested and implemented in services like Netflix, it would need to account for large numbers of users who may have very few ratings, possibly none.
 
-Another avenue for improving the solution investigated here would be to source movie information for places other than IMDB. This project made use of a curated IMDB dataset. However, in reality, such data sets may not be available. It would be of value to implement general web scraping tools that could obtain movie information from multiple sources and support predictions.
+Another avenue for improving the solution investigated here would be to source movie information from places other than IMDB. This project made use of a curated IMDB dataset. However, in reality, such data sets may not be available. It would be of value to implement general web scraping tools that could obtain movie information from multiple sources and support predictions.
 
 [^c1]: Francesco Ricci and Lior Rokach and Bracha Shapira, Introduction to Recommender Systems Handbook, Recommender Systems Handbook, Springer, 2011, pp. 1-35
 [^c2]: Prem Melville and Vikas Sindhwani, Recommender Systems, Encyclopedia of Machine Learning, 2010.
