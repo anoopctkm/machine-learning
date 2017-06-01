@@ -358,6 +358,15 @@ In this section, you will need to provide some form of visualization that emphas
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
 
 ### Reflection
+
+This project presented an interesting and complex problem for me to solve. It required scraping, processing, and merging multiple data sources; and utilising, fitting, combining, testing and refining, multiple algorithms. The outcome of the many interim steps involved in this project is that a user's prior movie ratings, and IMDB data for a new movie, can be used to predict a five-star rating of the new movie for that user.
+
+For me, the discovery and use of non-negative matrix factorisation was most interesting. It was a novel tecnique to me, and I can see its broad utility, well beyond recommender systems.
+
+Despite this useful tecnique, I found model refinement particularly difficult. It has been demonstrated empirically that collaborative-filtering algorithms produce better rating estimates than content-based filtering. In this project, the final solution required content-based filtering, therefore making predictions particularly difficult.
+
+I believe that the final solution is useful for making "best-guess" predictions of user ratings for new movies. Of course, the accuracy of those predictions will be far from perfect. Still, the solution provides a fast and simple approach for helping to personalise new movie recommendations that will likley improve customer experiences over and above basic benchmark approaches.
+
 In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
 - _Have you thoroughly summarized the entire process you used for this project?_
 - _Were there any interesting aspects of the project?_
