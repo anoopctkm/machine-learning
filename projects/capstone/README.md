@@ -20,3 +20,11 @@ There are three pieces needed to reproduce the work done here:
 - Python scripts contained in the directory, `scripts/`
 	- These scripts are referenced in `notebook.ipynb`
 - The data files described above, contained in a directory, `data/`
+	- Both links enable download of `.zip` files, that should placed and extracted in this directory. The results should be that the `data/` directory contains:
+		- imdb-5000-movie-dataset.zip
+		- link.csv
+		- movie.csv
+		- movielens-20m-dataset.zip
+		- movie_metadata.csv
+		- rating.csv
+		- tag.csv
