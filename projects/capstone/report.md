@@ -396,12 +396,6 @@ In this section, your model’s final solution and its results should be compare
 ## V. Conclusion
 _(approx. 1-2 pages)_
 
-### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
-
 ### Reflection
 
 This project presented an interesting and complex problem for me to solve. It required scraping, processing, and merging multiple data sources; and utilising, fitting, combining, testing and refining, multiple algorithms. The outcome of the many interim steps involved in this project is that a user's prior movie ratings, and IMDB data for a new movie, can be used to predict a five-star rating of the new movie for that user.
