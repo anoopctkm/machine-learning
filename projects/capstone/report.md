@@ -4,7 +4,6 @@ Simon Jackson
 April 24th, 2017
 
 ## I. Definition
-_(approx. 1-2 pages)_
 
 ### Project Overview
 
@@ -41,7 +40,6 @@ The RMSE is calculated by squaring the error terms (residuals) for predictions o
 A value of zero indicates that all predictions perfectly match the true values. The more positive the value, the worse the performance.
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 ### Data Exploration
 
@@ -75,12 +73,6 @@ The major steps taken to initially clean the data and prepare it for analysis ar
 -  **Converting user ratings into a sparse matrix**
     - The final 487,691 ratings were converted into a sparse 385 (users) x 4919 (movies) matrix.
 
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
-
 ### Exploratory Visualization
 
 Here we visually explore some descriptive information about the variables used to create the recommender system.
@@ -109,12 +101,6 @@ This Figure shows the distribution and covariance between the number of facebook
 ![movie pca](https://www.dropbox.com/s/6whf1k0p1euvnhd/pca_dimensions_scatterplot.png?raw=true)
 This Figure shows the distributions and covariance structure among the six principal components extracted from all continuous variables in the IMDB dataset. As expected, all components are uncorrelated with eachother. A useful feature to note is that the components are normally distributed, unlike some of the raw features shown in the previous Figures.
 
-
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
-
 ### Algorithms and Techniques
 
 This project will compare two methods for estimating users ratings for new movies: content-based filtering and a hybrid approach of content-based and collaborative filtering.
@@ -126,12 +112,6 @@ This project will compare two methods for estimating users ratings for new movie
 2. An issue with the content-based filtering only is the sparsity of the data. For example, what if the user has only rated movies that are very dissimilar to `m`? To solve this, collaborative filtering can be used to estiamte missing data within rated movies. These estimates, in turn, can be used by the content-based filtering appraoch described above. Combined, this approach is a hybrid recommender system. One of the most successful collaborative filtering algorithms for estimating sparse rating data in **non-negative matrix factorisation**. This approach attempts to factorise the user-by-movie rating matrix into two smaller matrices which can be multipled together to reproduce the original matrix. In this way, the smaller matrices can be estimated by ignoring missing values and then, when multipled back together, produce estiamtes in missing cells. The major consideration for this algorithm:
     - How many latent factors to factorise, `p`. That is, if the main matrix is of dimensions  `m x n`, then the two smaller matrices will be of dimensions `m x p` and `p x n`.
 
-
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
-
 ### Benchmark
 
 As a benchmark, the estimated rating of a new movie by a given user will be calculated as the mean of all of the user's existing ratings. This estimate represents the typical rating assigned by a user to movies, and therefore serves as an appropriate benchmark. The Figure below demonstrates this benchmark approach for a new movie and existing ratings:
@@ -142,13 +122,7 @@ The performance of this benchmark approach was established using the user-by-mov
 
 **The RMSE for the benchmark model was 0.9396**
 
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
-
-
 ## III. Methodology
-_(approx. 3-5 pages)_
 
 ### Data Preprocessing
 
@@ -166,12 +140,6 @@ The following preprocessing steps were done for the **MovieLens data set**:
 - IMDB movie id was linked to ratings by merging separate datasets.
 - Movies not appearing in the IMDB data set were removed.
 - Users who made fewer than 1000 ratings were dropped.
-
-
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
-- _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
-- _If no preprocessing is needed, has it been made clear why?_
 
 ### Implementation
 
@@ -197,11 +165,6 @@ This step involves developing a collaborative-filtering recommender for movies a
 #### Step 3: hybrid
 
 This step involved combining steps 1 and 2. The collaborative filtering method developed in Step 2 was used to fill in the sparse ratings data. Then, the content-based recommender developed in Step 1 was used to estimate ratings for new movies.
-
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
 
 ### Refinement
 
@@ -304,8 +267,6 @@ Name: movie_title, dtype: object
 
 These results appear to be excellent. For example, in the final test shown, the most similar movies to the fourth Star Wars movie are the five other movies in the same series.
 
-XXXXXXXXXXXXXXXXXX
-
 Using the simliarty metric defined in the stages above, the k-nearest neighbours approach described above was used to estimate movie ratings. As with the benchmark model, leave-one-out cross validation was conducted to derive performance metrics. The model was fit using five values of `k`: 10, 20, 30, 40, and 50. The results were as follows:
 
 Using 10-most similar movies...	RMSE = 0.8787
@@ -351,14 +312,7 @@ Again, it is important to note that these RMSE scores are based on estimating ra
 
 The hybrid model did not involve any refinement and will, therefore, be reported in the results section below. 
 
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
-
-
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
 
@@ -372,29 +326,11 @@ The final RMSE of this model was 0.9784. It seems that this is worse than the be
 
 Thus, the best-performing and final approach is the k-nearest-neighbours content-based filtering recommender system. Given that the RMSE was established using leave-one-out cross validation, we can feel confident that these results reflect a robust ability for the model to generalise to new data.
 
-
-
-
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
-
 ### Justification
 
 To recap, the RMSE of the benchamrk model was 0.9396. The RMSE for the content-based filtering model (using 30-nearest neighbours) was 0.8712. This is a marked improvement over the benchmark model that is already fitting the data reasonably well, thus justifying its use for as a method for predicting user ratings for new movies.
 
-
-
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
-
-
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 ### Reflection
 
@@ -406,35 +342,11 @@ Despite this useful tecnique, I found model refinement particularly difficult. I
 
 I believe that the final solution is useful for making "best-guess" predictions of user ratings for new movies. Of course, the accuracy of those predictions will be far from perfect. Still, the solution provides a fast and simple approach for helping to personalise new movie recommendations that will likley improve customer experiences over and above basic benchmark approaches.
 
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
-
 ### Improvement
 
 In this project, I opted to investigate a "best case" scenario, where users had each provided many ratings. This was done, in part, because the user data base had to be reduced to make the computations possible on my local machine. For a real movie recommender system to be tested and implemented in services like Netflix, it would need to account for large numbers of users who may have very few ratings, possibly none.
 
 Another avenue for improving the solution investigated here would be to source movie information for places other than IMDB. This project made use of a curated IMDB dataset. However, in reality, such data sets may not be available. It would be of value to implement general web scraping tools that could obtain movie information from multiple sources and support predictions.
-
-
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
-
------------
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
 
 [^c1]: Francesco Ricci and Lior Rokach and Bracha Shapira, Introduction to Recommender Systems Handbook, Recommender Systems Handbook, Springer, 2011, pp. 1-35
 [^c2]: Prem Melville and Vikas Sindhwani, Recommender Systems, Encyclopedia of Machine Learning, 2010.
