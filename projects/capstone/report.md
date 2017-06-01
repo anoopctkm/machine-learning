@@ -82,6 +82,34 @@ In this section, you will be expected to analyze the data you are using for the 
 - _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 
 ### Exploratory Visualization
+
+Here we visually explore some descriptive information about the variables used to create the recommender system.
+
+We will first explore discrete variables that were ultimately one-hot encoded:
+
+**Bar plot of movie ratings**
+![movie ratings](https://www.dropbox.com/s/9eujw57ii080dyj/ratings_barplot.png?raw=true)
+This Figure depits the distribution of movie ratings. For example, a little over 2000 movies included in the analysis had a rating of "r", a little under 1550 had a rating of "pg-13", and so on. Most movies clearly had ratings of "r", "pg-13", and "pg".
+
+**Bar plot of movie genre tags**
+![movie genres](https://www.dropbox.com/s/ananz8g5ch1320l/genre_barplot.png?raw=true)
+This Figure shows the distribution of genre tags assigned to the movies included in this analysis. Note that, unlike movie ratings above, multiple movide tags could be assigned to a single movie. "Drama" was the most common genre tag, folloed by "comedy", "thriller", "action", and so on.
+
+Next we will examine some of the continuous variables that were submitted to Principal Components Analysis.
+
+**Scatter plot of movie credentials**
+![movie credentials](https://www.dropbox.com/s/zci39wnhaxdrlsg/other_floats_scatterplot.png?raw=true)
+This Figure shows the distributions and covariance of three important variables related to each movie: number of critic reviews, movie duration, and gross profit, all shown after being normalized. It is clear that the number of critic reviews and gross profit are positively correlated, wheres the film duration is unrelated to these variables.
+
+**Scatter plot of facebook likes**
+![movie likes](https://www.dropbox.com/s/d8i83ox9lrfmtgb/facebook_likes_scatterplot.png?raw=true)
+This Figure shows the distribution and covariance between the number of facebook likes that the movie director and three main actors have. It's clear that the number of facebook likes is positively correlated among the three actors, whereas the number of director facebook likes does not show a clear pattern with the actor information.
+
+**Scatter plot of PCA**
+![movie pca](https://www.dropbox.com/s/6whf1k0p1euvnhd/pca_dimensions_scatterplot.png?raw=true)
+This Figure shows the distributions and covariance structure among the six principal components extracted from all continuous variables in the IMDB dataset. As expected, all components are uncorrelated with eachother. A useful feature to note is that the components are normally distributed, unlike some of the raw features shown in the previous Figures.
+
+
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 - _Have you visualized a relevant characteristic or feature about the dataset or input data?_
 - _Is the visualization thoroughly analyzed and discussed?_
