@@ -328,6 +328,8 @@ The final RMSE of this model was 0.9784. It seems that this is worse than the be
 
 Thus, the best-performing and final approach is the k-nearest-neighbours content-based filtering recommender system. Given that the RMSE was established using leave-one-out cross-validation, we can feel confident that these results reflect a robust ability for the model to generalise to new data.
 
+In summary, the results indicate that the final model is a reasonable solution to the problem (theoretically and empirically) and that it aligns with the expectation of supporting personalised movie recommendations. The results can be considered robust given the size of the data and method of cross-validation used. The final model performance indicates that the accuracy of predictions made on future data can be trusted to be better than ratings obtained through the use of simple heuristics.
+
 ### Justification
 
 To recap, the RMSE of the benchmark model was 0.9396. The RMSE for the content-based filtering model (using 30-nearest neighbours) was 0.8712. This is a marked improvement over the benchmark model that is already fitting the data reasonably well, thus justifying its use as a method for predicting user ratings for new movies.
