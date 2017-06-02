@@ -336,6 +336,14 @@ To recap, the RMSE of the benchmark model was 0.9396. The RMSE for the content-b
 
 ## V. Conclusion
 
+### Free-Form Visualization
+
+The Figure below summarises the performance of the three model solutions that were tested in this project.
+
+![RMSE](https://www.dropbox.com/s/gul2fieqtxcqlmp/rmse_plot.png?raw=true)
+
+It is easy to see from this Figure that the RMSE for the content-based model is markedly lower that the benchmark and hybrid models. That is, the model that best predicted user ratings for new movies involved computing the mean of ratings assigned to the 30 most-similar rated movies, with similarity being determined by cosine similarity on a specific set of movie features obtained from IMDB.
+
 ### Reflection
 
 This project presented an interesting and complex problem for me to solve. It required scraping, processing, and merging multiple data sources; and utilising, fitting, combining, testing and refining, multiple algorithms. The outcome of the many interim steps involved in this project is that a user's prior movie ratings, and IMDB data for a new movie, can be used to predict a five-star rating of the new movie for that user.
